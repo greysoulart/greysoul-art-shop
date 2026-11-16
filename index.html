@@ -298,7 +298,7 @@ footer{border-top:1px solid var(--line); padding:36px 0; margin-top:40px;}
       </div>
     </div>
     <div class="proto-note">
-      Produkte und Blog werden von Claudia selbst über den <a href="admin/" style="color:var(--accent);">Content-Manager</a> gepflegt. Zahlungen sind noch simuliert und Impressum/Datenschutz sind Platzhalter, bis diese final ausgefüllt und ein echter Zahlungsanbieter angebunden ist.
+      Produkte und Blog werden von Claudia selbst über den <a href="admin/" style="color:var(--accent);">Content-Manager</a> gepflegt. Zahlung per Überweisung und PayPal läuft über Mollie.
     </div>
   </div>
 </footer>
@@ -445,7 +445,7 @@ function viewHome(){
         <div class="badge-row">
           <span class="pill">Tinte · Kaffee · Kohle · Kalk</span>
           <span class="pill">Handsigniert &amp; nummeriert</span>
-          <span class="pill">Zahlung: Überweisung · PayPal · Sofort</span>
+          <span class="pill">Zahlung: Überweisung · PayPal</span>
         </div>
       </div>
       <div class="hero-art">${artworkHTML(prints[0])}</div>
@@ -660,29 +660,25 @@ function viewCheckout(){
       <div>
         <h3>Lieferadresse</h3>
         <div class="form-row2">
-          <div><label>Vorname</label><input required></div>
-          <div><label>Nachname</label><input required></div>
+          <div><label>Vorname</label><input id="coFirstName" required></div>
+          <div><label>Nachname</label><input id="coLastName" required></div>
         </div>
-        <label>Straße &amp; Hausnummer</label><input required>
+        <label>Straße &amp; Hausnummer</label><input id="coStreet" required>
         <div class="form-row2">
-          <div><label>PLZ</label><input required></div>
-          <div><label>Ort</label><input required></div>
+          <div><label>PLZ</label><input id="coZip" required></div>
+          <div><label>Ort</label><input id="coCity" required></div>
         </div>
-        <label>E-Mail</label><input type="email" required>
+        <label>E-Mail</label><input id="coEmail" type="email" required>
 
         <h3 style="margin-top:28px;">Zahlungsart</h3>
         <div class="pay-options" id="payOptions">
-          <div class="pay-opt selected" data-pay="ueberweisung">
-            <div class="pay-head"><span class="radio-dot"></span> Überweisung (Vorkasse)</div>
-            <div class="pay-detail">Du erhältst nach der Bestellung unsere Bankverbindung per E-Mail. Der Druck wird nach Zahlungseingang versendet.</div>
+          <div class="pay-opt selected" data-pay="banktransfer">
+            <div class="pay-head"><span class="radio-dot"></span> Überweisung (SEPA)</div>
+            <div class="pay-detail">Du bekommst die Bankverbindung nach dem Klick angezeigt. Sobald die Zahlung eingeht, wird das automatisch erkannt (meist nach 1 Bankarbeitstag) – der Druck wird danach versendet.</div>
           </div>
           <div class="pay-opt" data-pay="paypal">
             <div class="pay-head"><span class="radio-dot"></span> PayPal</div>
-            <div class="pay-detail">Weiterleitung zu PayPal zum Abschluss der Zahlung (im Prototyp simuliert).</div>
-          </div>
-          <div class="pay-opt" data-pay="sofort">
-            <div class="pay-head"><span class="radio-dot"></span> Sofortüberweisung / Klarna</div>
-            <div class="pay-detail">Sofortige Zahlung per Online-Banking über Klarna (im Prototyp simuliert).</div>
+            <div class="pay-detail">Weiterleitung zu PayPal, Zahlung ist sofort bestätigt.</div>
           </div>
         </div>
       </div>
@@ -696,14 +692,15 @@ function viewCheckout(){
           }).join('')}
           <div class="summary-row"><span>Versand</span><span class="mono">${fmtPrice(shipping)}</span></div>
           <div class="summary-row total"><span>Gesamt</span><span class="mono">${fmtPrice(cartTotal()+shipping)}</span></div>
-          <button class="btn" id="placeOrderBtn" style="width:100%; justify-content:center; margin-top:16px;">Bestellung abschließen (Demo)</button>
+          <button class="btn" id="placeOrderBtn" style="width:100%; justify-content:center; margin-top:16px;">Kostenpflichtig bestellen</button>
         </div>
       </div>
     </div>
   `;
 }
 function bindCheckout(){
-  let selectedPay = 'ueberweisung';
+  const shipping = 6.90;
+  let selectedPay = 'banktransfer';
   document.querySelectorAll('#payOptions .pay-opt').forEach(el=>{
     el.addEventListener('click', ()=>{
       document.querySelectorAll('#payOptions .pay-opt').forEach(o=>o.classList.remove('selected'));
@@ -711,33 +708,62 @@ function bindCheckout(){
       selectedPay = el.dataset.pay;
     });
   });
-  const form = document.querySelectorAll('input');
+  const form = document.querySelectorAll('.checkout-grid input');
   const btn = document.getElementById('placeOrderBtn');
-  if(btn) btn.addEventListener('click', ()=>{
+  if(btn) btn.addEventListener('click', async ()=>{
     let valid = true;
     form.forEach(inp=>{ if(inp.required && !inp.value){ valid=false; inp.style.borderColor='var(--accent)'; } });
     if(!valid){ showToast('Bitte alle Felder ausfüllen'); return; }
-    window._lastOrder = {
-      no: 'CK-' + Math.floor(100000+Math.random()*900000),
-      pay: selectedPay,
-      total: cartTotal()+6.90
+
+    const orderRef = 'CK-' + Math.floor(100000+Math.random()*900000);
+    const items = cart.map(line=>{
+      const p = findPrint(line.slug);
+      return { title: p ? p.title : line.slug, size: line.size, qty: line.qty, framed: !!line.framed };
+    });
+    const payload = {
+      amount: (cartTotal()+shipping).toFixed(2),
+      description: `Greysoul Art Bestellung ${orderRef}`,
+      method: selectedPay,
+      customerEmail: document.getElementById('coEmail').value,
+      orderRef,
+      items
     };
-    cart = [];
-    saveCart(cart);
-    location.hash = '#bestellung-bestaetigt';
+
+    btn.disabled = true;
+    btn.textContent = 'Einen Moment …';
+    try{
+      const res = await fetch('/.netlify/functions/create-payment', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if(!res.ok || !data.checkoutUrl){
+        showToast(data.error || 'Zahlung konnte nicht gestartet werden.');
+        btn.disabled = false;
+        btn.textContent = 'Kostenpflichtig bestellen';
+        return;
+      }
+      cart = [];
+      saveCart(cart);
+      window.location.href = data.checkoutUrl;
+    }catch(err){
+      showToast('Verbindung zur Zahlung fehlgeschlagen. Bitte erneut versuchen.');
+      btn.disabled = false;
+      btn.textContent = 'Kostenpflichtig bestellen';
+    }
   });
 }
 
 function viewConfirm(){
-  const o = window._lastOrder || {no:'CK-000000', pay:'ueberweisung', total:0};
-  const payLabel = {ueberweisung:'Überweisung (Vorkasse)', paypal:'PayPal', sofort:'Sofortüberweisung / Klarna'}[o.pay];
+  const params = new URLSearchParams(location.search);
+  const orderRef = params.get('order');
   return `
     <div class="confirm-box">
-      <span class="eyebrow">Demo-Bestellung</span>
-      <h1>Danke – deine Bestellung ist (als Demo) eingegangen</h1>
-      <div class="order-no">${o.no}</div>
-      <p class="lede" style="margin:0 auto 10px;">Zahlungsart: ${payLabel} · Gesamt: ${fmtPrice(o.total)}</p>
-      <p class="lede" style="margin:0 auto;">Dies ist ein Prototyp – es wurde keine echte Zahlung ausgelöst und kein Druck versendet.</p>
+      <span class="eyebrow">Bestellung</span>
+      <h1>Danke für deine Bestellung!</h1>
+      ${orderRef ? `<div class="order-no">${orderRef}</div>` : ''}
+      <p class="lede" style="margin:0 auto;">Sobald die Zahlung bei uns eingegangen ist, bekommst du eine Bestätigung per E-Mail, und der Druck wird versandfertig gemacht. Bei Überweisung kann das bis zu einem Bankarbeitstag dauern.</p>
       <a href="#galerie" class="btn" style="margin-top:24px;">Zurück zur Galerie</a>
     </div>
   `;
@@ -873,10 +899,10 @@ function viewLegal(title, isImpressum){
 
       <p style="color:var(--ink);"><strong>6. Bestellungen und Kontaktaufnahme</strong></p>
       <p>Bei einer Bestellung oder Kontaktaufnahme verarbeiten wir die von Ihnen angegebenen Daten (z. B. Name, Anschrift, E-Mail-Adresse) zur Bearbeitung Ihrer Anfrage bzw. zur Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO). Eine Weitergabe an Dritte erfolgt nur, soweit dies zur Vertragserfüllung notwendig ist (z. B. an ein Versandunternehmen).</p>
-      <p><strong>Hinweis:</strong> Bestell- und Kontaktformular sind auf dieser Website aktuell als Entwurf hinterlegt und noch nicht an ein echtes Bestell- bzw. Mailsystem angebunden. Dieser Abschnitt ist zu aktualisieren, sobald eine echte Bestellabwicklung eingerichtet ist.</p>
+      <p><strong>Hinweis:</strong> Das Kontaktformular ist aktuell als Entwurf hinterlegt und noch nicht an ein E-Mail-System angebunden.</p>
 
       <p style="color:var(--ink);"><strong>7. Zahlungsabwicklung</strong></p>
-      <p><strong>Platzhalter.</strong> Sobald ein echter Zahlungsdienstleister angebunden ist (z. B. für Überweisung, PayPal oder Sofortüberweisung/Klarna), wird hier der jeweilige Anbieter mit Name, Anschrift und Link zu dessen eigener Datenschutzerklärung ergänzt.</p>
+      <p>Für die Zahlungsabwicklung (Überweisung und PayPal) nutzen wir den Zahlungsdienstleister Mollie B.V., Keizersgracht 313, 1016 EE Amsterdam, Niederlande. Dabei werden die zur Zahlungsabwicklung notwendigen Daten (u. a. Name, Bestellreferenz, Zahlungsbetrag und bei PayPal die PayPal-Kontodaten) an Mollie übermittelt. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung). Weitere Informationen: <a href="https://www.mollie.com/de/privacy" target="_blank" rel="noopener" style="color:var(--accent);">Datenschutzerklärung von Mollie</a>. Bei Zahlung per PayPal gilt zusätzlich die <a href="https://www.paypal.com/de/legalhub/privacy-full" target="_blank" rel="noopener" style="color:var(--accent);">Datenschutzerklärung von PayPal</a>.</p>
 
       <p style="color:var(--ink);"><strong>8. Speicherdauer</strong></p>
       <p>Personenbezogene Daten aus Bestellungen werden nur so lange gespeichert, wie es für die Vertragserfüllung sowie zur Erfüllung gesetzlicher, insbesondere steuer- und handelsrechtlicher Aufbewahrungsfristen erforderlich ist.</p>
