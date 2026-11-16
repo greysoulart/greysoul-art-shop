@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bestellungen – Greysoul Art</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+  :root{
+    --bg:#eef0ec; --surface:#ffffff; --ink:#1c1d1a; --ink-soft:#52534c; --muted:#8a8c82;
+    --line:#d6d8d0; --accent:#8a5a37; --good:#3f6b4a; --good-bg:#e3ede4;
+    --warn:#8a6a2a; --warn-bg:#f3ecd9; --bad:#8a3a2a; --bad-bg:#f3e2dc;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#17181a; --surface:#1f2022; --ink:#ede9e2; --ink-soft:#b7b6ac; --muted:#86867d; --line:#333532;
+      --accent:#c49064; --good:#7fb589; --good-bg:#223326; --warn:#d9b96a; --warn-bg:#352c1c; --bad:#d98c7a; --bad-bg:#352220; }
+  }
+  *{box-sizing:border-box;}
+  body{background:var(--bg); color:var(--ink); font-family:-apple-system,Helvetica,Arial,sans-serif; margin:0; padding:24px 16px 60px;}
+  .wrap{max-width:820px; margin:0 auto;}
+  h1{font-size:1.5rem; margin:0 0 20px;}
+  .login-box{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:24px; max-width:360px; margin:60px auto;}
+  .login-box input{width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:4px; background:var(--bg); color:var(--ink); margin:10px 0; font-size:.95rem;}
+  button{font-family:inherit; cursor:pointer; background:var(--accent); color:#fff; border:none; padding:10px 18px; border-radius:4px; font-size:.92rem;}
+  button.ghost{background:transparent; color:var(--ink); border:1px solid var(--line);}
+  .top-row{display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; gap:10px; flex-wrap:wrap;}
+  .order{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 18px; margin-bottom:14px;}
+  .order-head{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;}
+  .order-ref{font-family:ui-monospace,Menlo,monospace; font-weight:600;}
+  .order-date{font-size:.8rem; color:var(--muted);}
+  .pill{font-size:.72rem; padding:3px 10px; border-radius:999px; text-transform:uppercase; letter-spacing:.03em; font-weight:600;}
+  .pill.paid{background:var(--good-bg); color:var(--good);}
+  .pill.pending, .pill.open, .pill.authorized{background:var(--warn-bg); color:var(--warn);}
+  .pill.failed, .pill.expired, .pill.canceled{background:var(--bad-bg); color:var(--bad);}
+  .order-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; font-size:.88rem;}
+  @media (max-width:560px){.order-grid{grid-template-columns:1fr;}}
+  .order-grid h4{margin:0 0 6px; font-size:.78rem; text-transform:uppercase; letter-spacing:.04em; color:var(--muted);}
+  .order-grid p{margin:0 0 4px; color:var(--ink-soft);}
+  .amount{font-family:ui-monospace,Menlo,monospace; font-weight:700; font-size:1.05rem;}
+  .empty, .error{text-align:center; color:var(--muted); padding:60px 0;}
+  .error{color:var(--bad);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Bestellungen</h1>
+  <div id="app">
+    <div class="login-box" id="loginBox">
+      <label style="font-size:.85rem; color:var(--ink-soft);">Passwort</label>
+      <input id="pwInput" type="password" placeholder="Passwort">
+      <button id="loginBtn" style="width:100%;">Anmelden</button>
+      <p id="loginError" style="color:var(--bad); font-size:.85rem; display:none; margin-top:10px;">Falsches Passwort.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+function fmtMoney(a){ return a ? `${Number(a.value).toLocaleString('de-DE',{minimumFractionDigits:2})} ${a.currency}` : ''; }
+function fmtDate(d){ return new Date(d).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}); }
+const statusLabel = {paid:'Bezahlt', open:'Offen', pending:'In Bearbeitung', authorized:'Autorisiert', failed:'Fehlgeschlagen', expired:'Abgelaufen', canceled:'Storniert'};
+const methodLabel = {banktransfer:'Überweisung', paypal:'PayPal'};
+
+async function loadOrders(password){
+  const res = await fetch('/.netlify/functions/list-orders', { headers: { 'X-Orders-Password': password } });
+  if(res.status === 401){ throw new Error('auth'); }
+  if(!res.ok){ throw new Error('server'); }
+  const data = await res.json();
+  return data.orders || [];
+}
+
+function renderOrders(orders){
+  const app = document.getElementById('app');
+  if(orders.length === 0){
+    app.innerHTML = `<div class="top-row"><button class="ghost" id="refreshBtn">Aktualisieren</button></div><div class="empty">Noch keine Bestellungen.</div>`;
+    bindRefresh();
+    return;
+  }
+  app.innerHTML = `
+    <div class="top-row">
+      <span style="color:var(--muted); font-size:.85rem;">${orders.length} Bestellung${orders.length===1?'':'en'}</span>
+      <button class="ghost" id="refreshBtn">Aktualisieren</button>
+    </div>
+    ${orders.map(o => `
+      <div class="order">
+        <div class="order-head">
+          <div>
+            <span class="order-ref">${o.orderRef}</span>
+            <span class="order-date"> · ${fmtDate(o.createdAt)}</span>
+          </div>
+          <span class="pill ${o.status}">${statusLabel[o.status] || o.status}</span>
+        </div>
+        <div class="order-grid">
+          <div>
+            <h4>Lieferadresse</h4>
+            <p>${o.shipping.firstName || ''} ${o.shipping.lastName || ''}</p>
+            <p>${o.shipping.street || ''}</p>
+            <p>${o.shipping.zip || ''} ${o.shipping.city || ''}</p>
+            <p>${o.customerEmail || ''}</p>
+          </div>
+          <div>
+            <h4>Bestellung</h4>
+            ${o.items.map(it => `<p>${it.title} (${it.size}${it.framed ? ', gerahmt' : ''}) × ${it.qty}</p>`).join('') || '<p>–</p>'}
+            <p class="amount" style="margin-top:8px;">${fmtMoney(o.amount)}</p>
+            <p style="color:var(--muted); font-size:.8rem;">Zahlart: ${methodLabel[o.method] || o.method || '–'}</p>
+          </div>
+        </div>
+      </div>
+    `).join('')}
+  `;
+  bindRefresh();
+}
+
+function bindRefresh(){
+  const btn = document.getElementById('refreshBtn');
+  if(btn) btn.addEventListener('click', boot);
+}
+
+async function boot(){
+  const password = sessionStorage.getItem('ck_orders_pw');
+  if(!password) return;
+  const app = document.getElementById('app');
+  try{
+    const orders = await loadOrders(password);
+    renderOrders(orders);
+  }catch(e){
+    if(e.message === 'auth'){
+      sessionStorage.removeItem('ck_orders_pw');
+      showLogin(true);
+    }else{
+      app.innerHTML = `<div class="error">Bestellungen konnten nicht geladen werden.</div>`;
+    }
+  }
+}
+
+function showLogin(wrong){
+  document.getElementById('app').innerHTML = `
+    <div class="login-box" id="loginBox">
+      <label style="font-size:.85rem; color:var(--ink-soft);">Passwort</label>
+      <input id="pwInput" type="password" placeholder="Passwort">
+      <button id="loginBtn" style="width:100%;">Anmelden</button>
+      <p id="loginError" style="color:var(--bad); font-size:.85rem; display:${wrong?'block':'none'}; margin-top:10px;">Falsches Passwort.</p>
+    </div>
+  `;
+  bindLogin();
+}
+
+function bindLogin(){
+  const pwInput = document.getElementById('pwInput');
+  const loginBtn = document.getElementById('loginBtn');
+  const tryLogin = async () => {
+    const password = pwInput.value;
+    try{
+      const orders = await loadOrders(password);
+      sessionStorage.setItem('ck_orders_pw', password);
+      renderOrders(orders);
+    }catch(e){
+      document.getElementById('loginError').style.display = 'block';
+    }
+  };
+  loginBtn.addEventListener('click', tryLogin);
+  pwInput.addEventListener('keydown', e => { if(e.key === 'Enter') tryLogin(); });
+}
+
+bindLogin();
+boot();
+</script>
+</body>
+</html>

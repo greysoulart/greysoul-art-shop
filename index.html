@@ -726,7 +726,14 @@ function bindCheckout(){
       method: selectedPay,
       customerEmail: document.getElementById('coEmail').value,
       orderRef,
-      items
+      items,
+      shipping: {
+        firstName: document.getElementById('coFirstName').value,
+        lastName: document.getElementById('coLastName').value,
+        street: document.getElementById('coStreet').value,
+        zip: document.getElementById('coZip').value,
+        city: document.getElementById('coCity').value
+      }
     };
 
     btn.disabled = true;

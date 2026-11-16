@@ -26,7 +26,7 @@ exports.handler = async (event) => {
     return { statusCode: 400, body: JSON.stringify({ error: "Ungültiges JSON." }) };
   }
 
-  const { amount, description, method, customerEmail, orderRef, items } = data;
+  const { amount, description, method, customerEmail, orderRef, items, shipping } = data;
 
   if (!amount || !description || !method || !orderRef) {
     return {
@@ -46,7 +46,7 @@ exports.handler = async (event) => {
     redirectUrl: `${siteUrl}/?order=${encodeURIComponent(orderRef)}#bestellung-bestaetigt`,
     webhookUrl: `${siteUrl}/.netlify/functions/mollie-webhook`,
     method,
-    metadata: { orderRef, customerEmail, items: items || [] },
+    metadata: { orderRef, customerEmail, items: items || [], shipping: shipping || {}, createdAt: new Date().toISOString() },
   };
 
   try {
