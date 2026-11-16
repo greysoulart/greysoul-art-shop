@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Greysoul Art online stellen</title>
+<style>
+  body{font-family:-apple-system,Helvetica,Arial,sans-serif; max-width:680px; margin:0 auto; padding:32px 20px 80px; line-height:1.6; color:#2a2a28; background:#faf9f6;}
+  h1{font-size:1.6rem; margin-bottom:4px;}
+  .sub{color:#73695c; margin-top:0; margin-bottom:32px;}
+  h2{font-size:1.15rem; margin-top:40px; border-bottom:2px solid #8a5a37; padding-bottom:6px;}
+  .step-num{display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; background:#8a5a37; color:#fff; border-radius:50%; font-size:.85rem; margin-right:8px; flex:none;}
+  .who{display:inline-block; font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; background:#ece3d4; color:#8a5a37; padding:3px 9px; border-radius:999px; margin-bottom:10px;}
+  code, .code{background:#efece4; padding:2px 6px; border-radius:4px; font-family:ui-monospace,Menlo,monospace; font-size:.9em;}
+  .box{background:#fff; border:1px solid #e4ddcf; border-radius:8px; padding:16px 18px; margin:14px 0;}
+  .note{background:#f3ece2; border-left:3px solid #8a5a37; padding:10px 14px; font-size:.92rem; margin:16px 0;}
+  ol{padding-left:22px;}
+  a{color:#8a5a37;}
+</style>
+</head>
+<body>
+
+<h1>Greysoul Art live schalten</h1>
+<p class="sub">Kurze Anleitung, damit Claudia Produkte &amp; Blogbeiträge später selbst über ein einfaches Formular pflegen kann – ganz ohne Programmieren.</p>
+
+<h2>1. GitHub-Konto (kostenlos)</h2>
+<span class="who">für Claudia</span>
+<div class="box">
+  <ol>
+    <li>Auf <a href="https://github.com/signup">github.com/signup</a> ein kostenloses Konto anlegen.</li>
+    <li>Ein neues <strong>privates</strong> Repository erstellen, z. B. mit dem Namen <span class="code">greysoul-art-shop</span>.</li>
+    <li>Unter <span class="code">Settings → Collaborators</span> die Person hinzufügen, die den Code hochlädt (GitHub-Benutzername von der Person, die diese Anleitung für dich vorbereitet hat).</li>
+  </ol>
+</div>
+
+<h2>2. Code hochladen</h2>
+<span class="who">technischer Schritt – macht die Person, die den Shop gebaut hat</span>
+<div class="box">
+  Sobald der Zugriff auf das Repository da ist, wird der fertige Shop-Ordner einmalig dorthin hochgeladen (per <span class="code">git push</span>). Das ist ein einmaliger technischer Schritt, danach nie wieder nötig.
+</div>
+
+<h2>3. Netlify-Konto (kostenlos)</h2>
+<span class="who">für Claudia</span>
+<div class="box">
+  <ol>
+    <li>Auf <a href="https://app.netlify.com/signup">netlify.com</a> registrieren – am einfachsten mit „Sign up with GitHub“, dann sind beide Konten direkt verbunden.</li>
+    <li><strong>„Add new site“ → „Import an existing project“</strong> auswählen und das GitHub-Repository verbinden.</li>
+    <li>Beim Einrichten: Build command leer lassen, Publish directory: <span class="code">.</span> (ein Punkt). Dann „Deploy“ klicken.</li>
+    <li>Nach ein paar Sekunden ist die Seite live, z. B. unter <span class="code">irgendein-name.netlify.app</span>.</li>
+  </ol>
+</div>
+
+<h2>4. Login für den Admin-Bereich einrichten</h2>
+<span class="who">für Claudia, einmalig</span>
+<div class="box">
+  <ol>
+    <li>Im Netlify-Dashboard der Seite: <span class="code">Site configuration → Identity → Enable Identity</span>.</li>
+    <li>Bei „Registration preferences“ <strong>„Invite only“</strong> auswählen (damit sich niemand Fremdes anmelden kann).</li>
+    <li><span class="code">Identity → Services → Git Gateway → Enable Git Gateway</span>.</li>
+    <li><span class="code">Identity → Invite users</span> → die eigene E-Mail-Adresse eintragen und einladen.</li>
+    <li>Die Einladungsmail öffnen, eigenes Passwort setzen – fertig.</li>
+  </ol>
+</div>
+
+<h2>5. Produkte &amp; Blogbeiträge pflegen</h2>
+<span class="who">ab jetzt jederzeit selbstständig für Claudia</span>
+<div class="box">
+  <ol>
+    <li><span class="code">https://irgendein-name.netlify.app/admin/</span> öffnen (Adresse aus Schritt 3, mit <span class="code">/admin/</span> am Ende).</li>
+    <li>Mit dem in Schritt 4 gesetzten Passwort einloggen.</li>
+    <li>Links „Produkte“ oder „Blog“ auswählen, „+ Neu“ klicken, Formular ausfüllen (Titel, Bild hochladen, Preis, Text …), „Publish“ klicken.</li>
+    <li>Nach wenigen Sekunden ist die Änderung live auf der echten Seite sichtbar.</li>
+  </ol>
+</div>
+
+<div class="note">
+  Eigene Wunsch-Domain (z. B. greysoul-art.de) ist optional und separat bei einem Registrar zu kaufen (ca. 10–15 €/Jahr), dann in den Netlify-Domaineinstellungen hinterlegen. Ohne eigene Domain bleibt die <span class="code">netlify.app</span>-Adresse kostenlos bestehen.
+</div>
+
+<div class="note">
+  Noch offen vor dem richtigen Live-Start: echte Zahlungsanbindung (aktuell nur Demo) sowie die echten Angaben für Impressum und Datenschutz.
+</div>
+
+</body>
+</html>
