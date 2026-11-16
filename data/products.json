@@ -1,0 +1,87 @@
+{
+  "items": [
+    {
+      "slug": "verschmelzung",
+      "title": "Verschmelzung",
+      "img": "images/verschmelzung.webp",
+      "year": 2026,
+      "edition": 6,
+      "medium": "Kohle & Tinte auf Papier",
+      "tags": ["Originale", "Kunstdrucke"],
+      "blurb": "Dieses Original hängt an meinem Arbeitsplatz und bleibt dort – nur als Kunstdruck in A4 und A3 verfügbar, je 6 Exemplare. Jeder Druck kommt mit einer handgemalten Dankeskarte mit meinen Gedanken zum Bild.",
+      "sizes": [
+        { "code": "A4", "dims": "21 × 30 cm", "price": 95, "framePrice": 32 },
+        { "code": "A3", "dims": "30 × 40 cm", "price": 145, "framePrice": 52 }
+      ]
+    },
+    {
+      "slug": "der-erste-tropfen",
+      "title": "Der erste Tropfen",
+      "img": "images/der-erste-tropfen.webp",
+      "year": 2026,
+      "edition": 15,
+      "medium": "Kohle, Tinte & Kaffee auf Papier",
+      "tags": ["Kunstdrucke", "Originale"],
+      "blurb": "Der erste Regentropfen kündigt Erlösung an – intensiv, nur für einen Moment. Ein Gesicht im Regen, in Kohle und Kaffee festgehalten.",
+      "sizes": [
+        { "code": "A4", "dims": "21 × 30 cm", "price": 90, "framePrice": 32 },
+        { "code": "A3", "dims": "30 × 40 cm", "price": 140, "framePrice": 52 }
+      ]
+    },
+    {
+      "slug": "blindes-vertrauen",
+      "title": "Blindes Vertrauen",
+      "img": "images/blindes-vertrauen.webp",
+      "year": 2025,
+      "edition": 15,
+      "medium": "Kohle & Tinte auf Papier",
+      "tags": ["Kunstdrucke", "Freiheit"],
+      "blurb": "Dort, wo sie zerrissen war, strahlt sie heller als jede Narbe. Eine Tänzerin zwischen Mond und Sternen, entstanden aus blindem Vertrauen ins Universum.",
+      "sizes": [
+        { "code": "A4", "dims": "21 × 30 cm", "price": 90, "framePrice": 32 },
+        { "code": "A3", "dims": "30 × 40 cm", "price": 140, "framePrice": 52 }
+      ]
+    },
+    {
+      "slug": "aus-liebe-zu-dir-selbst",
+      "title": "Aus Liebe zu Dir selbst",
+      "img": "images/ballerina-collage.webp",
+      "year": 2025,
+      "edition": 10,
+      "medium": "Collage: Kohle, Tusche & Papier auf Karton, bereits gerahmt",
+      "tags": ["Collagen", "Kunstdrucke"],
+      "blurb": "Meine erste Collage: eine Ballerina aus einem alten Bild, neu zusammengesetzt. Aus Liebe zu dir selbst. Dieses Motiv wird ausschließlich fertig gerahmt geliefert.",
+      "sizes": [
+        { "code": "A4", "dims": "21 × 30 cm", "price": 100 },
+        { "code": "A3", "dims": "30 × 40 cm", "price": 160 }
+      ]
+    },
+    {
+      "slug": "regentaenzerin",
+      "title": "Regentänzerin",
+      "img": "images/greysoul-untitled.jpg",
+      "year": 2025,
+      "edition": 15,
+      "medium": "Kohle & Kaffee auf Papier",
+      "tags": ["Originale", "Kunstdrucke"],
+      "blurb": "Arbeitstitel – der endgültige Name wird mit Claudia abgestimmt. Eine Frau mit Schirm im Kaffee- und Kohleregen.",
+      "sizes": [
+        { "code": "A4", "dims": "21 × 30 cm", "price": 85, "framePrice": 32 },
+        { "code": "A3", "dims": "30 × 40 cm", "price": 135, "framePrice": 52 }
+      ]
+    },
+    {
+      "slug": "seelenpost-reise",
+      "title": "Seelenpost – Ihre Reise",
+      "img": "images/seelenpost-ihre-reise.jpg",
+      "year": 2025,
+      "edition": 10,
+      "medium": "3er-Set, Kohle & Tusche auf Papier",
+      "tags": ["Seelenpost", "Kunstdrucke"],
+      "blurb": "Drei Werke, die unabhängig entstanden sind und doch zusammengehören: „Loslassen, was nicht zu dir gehört“, „Vertrauen in das Universum“, „Auferstehung als du selbst“. Jede Karte kommt mit handgemalter Dankeskarte (siehe Foto).",
+      "sizes": [
+        { "code": "Set", "dims": "3 Karten, je ca. 10 × 15 cm", "price": 120 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,844 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Greysoul Art</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: sticky header + hash-routed single view area; product grid; two-column checkout; editorial gallery feel */
+:root{
+  --bg:#eef0ec;
+  --surface:#ffffff;
+  --surface-sunken:#e2e5de;
+  --ink:#1c1d1a;
+  --ink-soft:#52534c;
+  --muted:#8a8c82;
+  --line:#d6d8d0;
+  --accent:#8a5a37;
+  --accent-ink:#ffffff;
+  --accent-soft:#ece3d4;
+  --good:#3f6b4a;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#17181a;
+    --surface:#1f2022;
+    --surface-sunken:#26282a;
+    --ink:#ede9e2;
+    --ink-soft:#b7b6ac;
+    --muted:#86867d;
+    --line:#333532;
+    --accent:#c49064;
+    --accent-ink:#1c1d1a;
+    --accent-soft:#332a21;
+    --good:#7fb589;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#17181a;
+  --surface:#1f2022;
+  --surface-sunken:#26282a;
+  --ink:#ede9e2;
+  --ink-soft:#b7b6ac;
+  --muted:#86867d;
+  --line:#333532;
+  --accent:#d99c90;
+  --accent-ink:#1c1d1a;
+  --accent-soft:#2c2320;
+  --good:#7fb589;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box;}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'Inter',sans-serif;
+  line-height:1.5;
+  margin:0;
+}
+h1,h2,h3,.display{
+  font-family:'Fraunces',serif;
+  font-weight:600;
+  text-wrap:balance;
+  letter-spacing:-0.01em;
+}
+.mono{font-family:'IBM Plex Mono',monospace;}
+a{color:inherit;text-decoration:none;}
+button{font-family:inherit;cursor:pointer;}
+.wrap{
+  max-width:1120px;
+  margin:0 auto;
+  padding-left:max(16px, env(safe-area-inset-left,0px));
+  padding-right:max(16px, env(safe-area-inset-right,0px));
+}
+
+/* header */
+header.site{
+  position:sticky; top:0; z-index:20;
+  background:var(--bg);
+  border-bottom:1px solid var(--line);
+}
+.header-row{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:16px; padding:14px 0; flex-wrap:wrap;
+}
+.brand{display:flex; align-items:baseline; gap:10px;}
+.brand .name{font-size:1.4rem;}
+.brand .tag{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.65rem; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--accent); background:var(--accent-soft);
+  padding:3px 7px; border-radius:3px;
+}
+nav.main{display:flex; gap:22px; flex-wrap:wrap; order:3; width:100%;}
+nav.main a{
+  font-size:.92rem; color:var(--ink-soft); padding:4px 0; border-bottom:2px solid transparent;
+}
+nav.main a.active, nav.main a:hover{color:var(--ink); border-color:var(--accent);}
+.cart-btn{
+  display:flex; align-items:center; gap:8px; flex:none;
+  background:var(--surface); border:1px solid var(--line); border-radius:999px;
+  padding:8px 14px; font-size:.88rem;
+}
+@media (min-width:681px){
+  .header-row{flex-wrap:nowrap;}
+  nav.main{order:initial; width:auto; gap:22px;}
+}
+@media (max-width:420px){
+  nav.main{gap:14px 16px;}
+  nav.main a{font-size:.85rem;}
+}
+.cart-count{
+  background:var(--accent); color:var(--accent-ink);
+  border-radius:999px; min-width:20px; height:20px; display:inline-flex;
+  align-items:center; justify-content:center; font-size:.72rem; font-family:'IBM Plex Mono',monospace;
+}
+
+main{min-height:60vh; padding-block:40px;}
+.section-head{margin-bottom:28px;}
+.eyebrow{
+  font-family:'IBM Plex Mono',monospace; font-size:.72rem; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--accent); display:block; margin-bottom:10px;
+}
+.lede{color:var(--ink-soft); max-width:640px; font-size:1.02rem;}
+
+/* hero */
+.hero{
+  display:grid; grid-template-columns:1.1fr 1fr; gap:48px; align-items:center;
+  padding-block:20px 56px;
+}
+@media (max-width:760px){.hero{grid-template-columns:1fr;}}
+.hero h1{font-size:clamp(2.1rem,4.5vw,3.2rem); margin:0 0 18px;}
+.hero p.lede{margin-bottom:26px;}
+.btn{
+  display:inline-flex; align-items:center; gap:8px;
+  background:var(--accent); color:var(--accent-ink);
+  padding:12px 22px; border-radius:4px; font-size:.95rem; font-weight:600; border:none;
+}
+.btn.ghost{
+  background:transparent; color:var(--ink); border:1px solid var(--line);
+}
+.btn-row{display:flex; gap:12px; flex-wrap:wrap;}
+.hero-art{position:relative;}
+.badge-row{display:flex; gap:10px; margin-top:18px; flex-wrap:wrap;}
+.pill{
+  font-size:.75rem; color:var(--ink-soft); background:var(--surface);
+  border:1px solid var(--line); padding:5px 10px; border-radius:999px;
+}
+
+/* artwork */
+.artwork{
+  position:relative; border-radius:6px; overflow:hidden;
+  aspect-ratio:4/5;
+  border:1px solid var(--line);
+  background:var(--surface-sunken);
+}
+.artwork img{
+  width:100%; height:100%; object-fit:cover; display:block;
+}
+.artwork.small{aspect-ratio:1/1;}
+
+/* grid */
+.grid{display:grid; grid-template-columns:repeat(3,1fr); gap:28px;}
+@media (max-width:860px){.grid{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:560px){.grid{grid-template-columns:1fr;}}
+.card{display:flex; flex-direction:column; gap:10px;}
+.card .title{font-size:1.05rem; margin:0;}
+.card .meta{font-size:.82rem; color:var(--muted);}
+.card .price{font-family:'IBM Plex Mono',monospace; font-size:.92rem;}
+.card .edition{
+  font-family:'IBM Plex Mono',monospace; font-size:.68rem; color:var(--accent);
+  text-transform:uppercase; letter-spacing:.06em;
+}
+
+/* product page */
+.product{display:grid; grid-template-columns:1fr 1fr; gap:52px;}
+@media (max-width:800px){.product{grid-template-columns:1fr;}}
+.product .meta-table{width:100%; border-collapse:collapse; margin:18px 0;}
+.product .meta-table td{padding:7px 0; border-bottom:1px solid var(--line); font-size:.9rem;}
+.product .meta-table td:first-child{color:var(--muted); width:40%;}
+.size-options{display:flex; gap:10px; flex-wrap:wrap; margin:14px 0 20px;}
+.size-opt{
+  border:1px solid var(--line); border-radius:4px; padding:10px 14px; cursor:pointer; background:var(--surface);
+  font-size:.86rem;
+}
+.size-opt.selected{border-color:var(--accent); background:var(--accent-soft); color:var(--accent);}
+.price-big{font-family:'IBM Plex Mono',monospace; font-size:1.5rem; margin:6px 0 18px;}
+.coa-box{
+  background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:16px; margin-top:24px;
+  font-size:.86rem; color:var(--ink-soft);
+}
+.coa-box strong{color:var(--ink);}
+
+/* cart / checkout */
+.cart-line{display:flex; gap:16px; align-items:center; padding:16px 0; border-bottom:1px solid var(--line); flex-wrap:wrap;}
+.cart-line .art-thumb{width:70px; flex:none;}
+.cart-line .grow{flex:1; min-width:140px;}
+.cart-line > .mono{flex:none; white-space:nowrap;}
+.qty-ctl{display:flex; align-items:center; gap:10px;}
+.qty-ctl button{
+  width:26px; height:26px; border:1px solid var(--line); background:var(--surface); border-radius:4px;
+}
+.summary-box{
+  background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:20px; position:sticky; top:96px;
+}
+.summary-row{display:flex; justify-content:space-between; gap:10px; font-size:.9rem; padding:6px 0;}
+.summary-row > span:last-child{text-align:right; flex:none;}
+.summary-row.total{font-weight:700; font-size:1.05rem; border-top:1px solid var(--line); margin-top:8px; padding-top:14px;}
+.checkout-grid{display:grid; grid-template-columns:1.3fr 1fr; gap:40px;}
+@media (max-width:820px){.checkout-grid{grid-template-columns:1fr;}}
+label{display:block; font-size:.82rem; color:var(--ink-soft); margin:14px 0 5px;}
+input{
+  width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:4px;
+  background:var(--surface); color:var(--ink); font-family:inherit; font-size:.92rem;
+}
+.form-row2{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+.pay-options{display:flex; flex-direction:column; gap:10px; margin:14px 0 20px;}
+.pay-opt{
+  border:1px solid var(--line); border-radius:6px; padding:14px; cursor:pointer; background:var(--surface);
+}
+.pay-opt.selected{border-color:var(--accent); background:var(--accent-soft);}
+.pay-opt .pay-head{display:flex; align-items:center; gap:10px; font-weight:600; font-size:.92rem;}
+.pay-opt .pay-detail{font-size:.82rem; color:var(--ink-soft); margin-top:8px; display:none;}
+.pay-opt.selected .pay-detail{display:block;}
+.radio-dot{width:16px; height:16px; border-radius:999px; border:1px solid var(--line); flex:none; position:relative;}
+.pay-opt.selected .radio-dot{border-color:var(--accent);}
+.pay-opt.selected .radio-dot::after{
+  content:""; position:absolute; inset:3px; border-radius:999px; background:var(--accent);
+}
+
+/* blog */
+.post-list{display:flex; flex-direction:column; gap:28px;}
+.post-row{display:grid; grid-template-columns:140px 1fr; gap:22px; padding-bottom:24px; border-bottom:1px solid var(--line);}
+@media (max-width:560px){.post-row{grid-template-columns:1fr;}}
+.post-row .date{font-family:'IBM Plex Mono',monospace; font-size:.72rem; color:var(--muted);}
+.post-body p{color:var(--ink-soft); max-width:640px;}
+
+/* footer */
+footer{border-top:1px solid var(--line); padding:36px 0; margin-top:40px;}
+.footer-grid{display:flex; justify-content:space-between; gap:24px; flex-wrap:wrap; font-size:.85rem; color:var(--muted);}
+.footer-links{display:flex; gap:18px; flex-wrap:wrap;}
+.footer-links a:hover{color:var(--ink);}
+.proto-note{
+  margin-top:18px; font-size:.78rem; color:var(--muted); border-top:1px solid var(--line); padding-top:16px;
+}
+
+.toast{
+  position:fixed; bottom:20px; left:50%; transform:translateX(-50%) translateY(20px);
+  background:var(--ink); color:var(--bg); padding:12px 20px; border-radius:6px; font-size:.86rem;
+  opacity:0; transition:opacity .25s, transform .25s; z-index:50; pointer-events:none;
+}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
+.empty-state{padding:60px 0; text-align:center; color:var(--muted);}
+.breadcrumb{font-size:.82rem; color:var(--muted); margin-bottom:18px;}
+.breadcrumb a:hover{color:var(--accent);}
+.confirm-box{
+  text-align:center; max-width:520px; margin:0 auto; padding:40px 20px;
+}
+.order-no{font-family:'IBM Plex Mono',monospace; font-size:1.2rem; color:var(--accent); margin:14px 0;}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap header-row">
+    <div class="brand">
+      <a href="#home" class="name display">Greysoul Art</a>
+      <span class="tag">Vorschau</span>
+    </div>
+    <nav class="main" id="mainNav">
+      <a href="#galerie" data-route="galerie">Galerie</a>
+      <a href="#blog" data-route="blog">Blog</a>
+      <a href="#ueber-claudia" data-route="ueber-claudia">Über Claudia</a>
+      <a href="#kontakt" data-route="kontakt">Kontakt</a>
+    </nav>
+    <a href="#warenkorb" class="cart-btn" data-route="warenkorb">
+      Warenkorb <span class="cart-count mono" id="cartCount">0</span>
+    </a>
+  </div>
+</header>
+
+<main class="wrap" id="app"><div class="empty-state">Lädt …</div></main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>© 2026 Greysoul Art · Claudia Hannemann · Unikate &amp; limitierte Editionen</div>
+      <div class="footer-links">
+        <a href="#kontakt">Kontakt</a>
+        <a href="#impressum">Impressum</a>
+        <a href="#datenschutz">Datenschutz</a>
+        <a href="#versand">Versand &amp; Rückgabe</a>
+        <a href="https://www.instagram.com/greysoul_art/" target="_blank" rel="noopener">@greysoul_art</a>
+      </div>
+    </div>
+    <div class="proto-note">
+      Produkte und Blog werden von Claudia selbst über den <a href="admin/" style="color:var(--accent);">Content-Manager</a> gepflegt. Zahlungen sind noch simuliert und Impressum/Datenschutz sind Platzhalter, bis diese final ausgefüllt und ein echter Zahlungsanbieter angebunden ist.
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<script>
+// ---------- data (loaded from data/products.json & data/posts.json, edited by Claudia via /admin) ----------
+let prints = [];
+let posts = [];
+let allTags = ['Alle'];
+
+async function loadData(){
+  try{
+    const [productsRes, postsRes] = await Promise.all([
+      fetch('data/products.json', {cache:'no-store'}),
+      fetch('data/posts.json', {cache:'no-store'})
+    ]);
+    const productsJson = await productsRes.json();
+    const postsJson = await postsRes.json();
+    prints = productsJson.items || [];
+    posts = (postsJson.items || []).slice().sort((a,b)=> new Date(b.date) - new Date(a.date));
+    const tagSet = new Set();
+    prints.forEach(p => (p.tags||[]).forEach(t => tagSet.add(t)));
+    allTags = ['Alle', ...tagSet];
+  }catch(e){
+    document.getElementById('app').innerHTML = '<div class="empty-state">Inhalte konnten nicht geladen werden. Läuft diese Seite über einen lokalen/echten Webserver (nicht als einzelne Datei geöffnet)?</div>';
+    console.error(e);
+    return;
+  }
+  render();
+}
+
+// ---------- cart ----------
+function loadCart(){
+  try{ return JSON.parse(localStorage.getItem('ck_cart')||'[]'); }catch(e){ return []; }
+}
+function saveCart(c){
+  try{ localStorage.setItem('ck_cart', JSON.stringify(c)); }catch(e){}
+}
+let cart = loadCart();
+
+function cartTotalCount(){ return cart.reduce((s,l)=>s+l.qty,0); }
+function findPrint(slug){ return prints.find(p=>p.slug===slug); }
+function unitPrice(line){
+  const p = findPrint(line.slug);
+  const sz = p.sizes.find(s=>s.code===line.size);
+  return sz.price + (line.framed && sz.framePrice ? sz.framePrice : 0);
+}
+function lineTotal(line){
+  return unitPrice(line) * line.qty;
+}
+function cartTotal(){ return cart.reduce((s,l)=>s+lineTotal(l),0); }
+function addToCart(slug, size, framed){
+  const existing = cart.find(l=>l.slug===slug && l.size===size && !!l.framed===!!framed);
+  if(existing){ existing.qty += 1; } else { cart.push({slug, size, qty:1, framed:!!framed}); }
+  saveCart(cart);
+  updateCartCount();
+  showToast(framed ? 'Gerahmt zum Warenkorb hinzugefügt' : 'Zum Warenkorb hinzugefügt');
+}
+function setQty(slug,size,framed,qty){
+  const line = cart.find(l=>l.slug===slug && l.size===size && !!l.framed===!!framed);
+  if(!line) return;
+  line.qty = Math.max(1, qty);
+  saveCart(cart);
+  render();
+}
+function removeLine(slug,size,framed){
+  cart = cart.filter(l=>!(l.slug===slug && l.size===size && !!l.framed===!!framed));
+  saveCart(cart);
+  render();
+}
+function updateCartCount(){
+  const el = document.getElementById('cartCount');
+  if(el) el.textContent = cartTotalCount();
+}
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(()=>t.classList.remove('show'), 2200);
+}
+function fmtPrice(n){ return n.toLocaleString('de-DE',{minimumFractionDigits:2, maximumFractionDigits:2}) + ' €'; }
+
+// ---------- artwork rendering ----------
+function artworkHTML(print, small){
+  if(!print) return `<div class="artwork${small?' small':''}"></div>`;
+  return `<div class="artwork${small?' small':''}">
+      <img src="${print.img}" alt="${print.title} – Original von Claudia Hannemann (Greysoul Art)" loading="lazy">
+    </div>`;
+}
+
+// ---------- router ----------
+function currentRoute(){
+  const h = (location.hash||'#home').slice(1);
+  return h || 'home';
+}
+function navigateHighlight(route){
+  document.querySelectorAll('#mainNav a').forEach(a=>{
+    a.classList.toggle('active', a.dataset.route===route);
+  });
+}
+
+function render(){
+  const route = currentRoute();
+  const app = document.getElementById('app');
+  updateCartCount();
+
+  if(route === 'home'){ app.innerHTML = viewHome(); bindHome(); }
+  else if(route === 'galerie'){ app.innerHTML = viewGallery(); bindGallery(); }
+  else if(route.startsWith('werk-')){ app.innerHTML = viewProduct(route.slice(5)); bindProduct(route.slice(5)); }
+  else if(route === 'warenkorb'){ app.innerHTML = viewCart(); bindCart(); }
+  else if(route === 'kasse'){ app.innerHTML = viewCheckout(); bindCheckout(); }
+  else if(route === 'bestellung-bestaetigt'){ app.innerHTML = viewConfirm(); }
+  else if(route === 'blog'){ app.innerHTML = viewBlogList(); }
+  else if(route.startsWith('beitrag-')){ app.innerHTML = viewPost(route.slice(8)); }
+  else if(route === 'ueber-claudia'){ app.innerHTML = viewAbout(); }
+  else if(route === 'kontakt'){ app.innerHTML = viewContact(); }
+  else if(route === 'impressum'){ app.innerHTML = viewLegal('Impressum', true); }
+  else if(route === 'datenschutz'){ app.innerHTML = viewLegal('Datenschutz', false); }
+  else if(route === 'versand'){ app.innerHTML = viewShipping(); }
+  else { app.innerHTML = viewHome(); bindHome(); }
+
+  navigateHighlight(['galerie','blog','ueber-claudia','kontakt','warenkorb'].includes(route)?route:'');
+  window.scrollTo(0,0);
+}
+
+// ---------- views ----------
+function viewHome(){
+  const featured = prints.slice(0,3);
+  return `
+    <section class="hero">
+      <div>
+        <span class="eyebrow">Kunst nach meinem Gefühl</span>
+        <h1>Greysoul Art — Arbeiten in Tinte, Kaffee, Kohle und Kalk.</h1>
+        <p class="lede">Claudia Hannemann arbeitet mit reduzierten Mitteln und ungewöhnlichen Materialien. Jedes Motiv erscheint als limitierte, handsignierte und nummerierte Druckauflage — Originale sind auf Anfrage einzeln verfügbar.</p>
+        <div class="btn-row">
+          <a href="#galerie" class="btn">Galerie ansehen</a>
+          <a href="#ueber-claudia" class="btn ghost">Über Claudia</a>
+        </div>
+        <div class="badge-row">
+          <span class="pill">Tinte · Kaffee · Kohle · Kalk</span>
+          <span class="pill">Handsigniert &amp; nummeriert</span>
+          <span class="pill">Zahlung: Überweisung · PayPal · Sofort</span>
+        </div>
+      </div>
+      <div class="hero-art">${artworkHTML(prints[0])}</div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <span class="eyebrow">Aktuelle Editionen</span>
+        <h2>Drei Arbeiten aus der laufenden Serie</h2>
+      </div>
+      <div class="grid">
+        ${featured.map(p=>printCard(p)).join('')}
+      </div>
+    </section>
+
+    <section style="margin-top:64px; border-top:1px solid var(--line); padding-top:40px;">
+      <div class="section-head">
+        <span class="eyebrow">Journal</span>
+        <h2>Aus dem Blog</h2>
+      </div>
+      <div class="post-list">
+        ${posts.slice(0,2).map(postRow).join('')}
+      </div>
+      <a href="#blog" class="btn ghost" style="margin-top:20px;">Alle Beiträge</a>
+    </section>
+
+    <section style="margin-top:64px; background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:32px;">
+      <h3 style="margin-top:0;">Neue Editionen nicht verpassen</h3>
+      <p class="lede" style="margin-bottom:18px;">Kurze Nachricht, sobald eine neue limitierte Auflage erscheint. Kein Spam.</p>
+      <form id="newsletterForm" style="display:flex; gap:10px; flex-wrap:wrap; max-width:420px;">
+        <input type="email" required placeholder="deine@email.de" style="flex:1; min-width:200px;">
+        <button class="btn" type="submit">Eintragen</button>
+      </form>
+    </section>
+  `;
+}
+function bindHome(){
+  const f = document.getElementById('newsletterForm');
+  if(f) f.addEventListener('submit', e=>{ e.preventDefault(); showToast('Danke! (Demo – noch nicht angebunden)'); f.reset(); });
+}
+
+function printCard(p){
+  const fromPrice = Math.min(...p.sizes.map(s=>s.price));
+  return `
+    <a href="#werk-${p.slug}" class="card">
+      ${artworkHTML(p)}
+      <div class="edition">Auflage ${p.edition}</div>
+      <h3 class="title">${p.title}</h3>
+      <div class="meta">${p.year} · Giclée-Druck</div>
+      <div class="price">ab ${fmtPrice(fromPrice)}</div>
+    </a>
+  `;
+}
+
+let galleryFilter = 'Alle';
+function viewGallery(){
+  const shown = galleryFilter==='Alle' ? prints : prints.filter(p=>(p.tags||[]).includes(galleryFilter));
+  return `
+    <div class="section-head">
+      <span class="eyebrow">Galerie</span>
+      <h1>Alle Editionen</h1>
+      <p class="lede">Jedes Motiv ist auf eine feste Auflage begrenzt. Ist eine Edition ausverkauft, wird sie nicht erneut gedruckt.</p>
+    </div>
+    <div class="badge-row" id="tagFilters" style="margin-bottom:28px;">
+      ${allTags.map(t=>`<span class="pill filter-pill${t===galleryFilter?' active':''}" data-tag="${t}" style="cursor:pointer;${t===galleryFilter?'border-color:var(--accent);color:var(--accent);':''}">${t}</span>`).join('')}
+    </div>
+    <div class="grid">${shown.length? shown.map(printCard).join('') : '<div class="empty-state">Keine Werke in dieser Kategorie.</div>'}</div>
+  `;
+}
+function bindGallery(){
+  document.querySelectorAll('#tagFilters .filter-pill').forEach(el=>{
+    el.addEventListener('click', ()=>{ galleryFilter = el.dataset.tag; render(); });
+  });
+}
+
+function viewProduct(slug){
+  const p = findPrint(slug);
+  if(!p) return `<div class="empty-state">Werk nicht gefunden. <a href="#galerie">Zur Galerie</a></div>`;
+  return `
+    <div class="breadcrumb"><a href="#galerie">Galerie</a> / ${p.title}</div>
+    <div class="product">
+      <div>${artworkHTML(p)}</div>
+      <div>
+        <div class="edition">Limitierte Auflage · ${p.edition} Exemplare</div>
+        <h1 style="margin:8px 0 6px;">${p.title}</h1>
+        <p class="lede">${p.blurb}</p>
+
+        <table class="meta-table">
+          <tr><td>Original</td><td>${p.medium}, Unikat (nicht Teil des Drucks)</td></tr>
+          <tr><td>Druck</td><td>Giclée-Reproduktion auf Hahnemühle Museumspapier, 310g</td></tr>
+          <tr><td>Entstehungsjahr</td><td>${p.year}</td></tr>
+          <tr><td>Auflage</td><td>${p.edition} Exemplare, handsigniert &amp; nummeriert</td></tr>
+          <tr><td>Versand</td><td>Gerollt in stabiler Versandhülse, aus Deutschland</td></tr>
+        </table>
+
+        <div>
+          <label style="margin-top:0;">Format wählen</label>
+          <div class="size-options" id="sizeOptions">
+            ${p.sizes.map((s,i)=>`<div class="size-opt${i===0?' selected':''}" data-size="${s.code}">${s.code} · ${s.dims} — ${fmtPrice(s.price)}</div>`).join('')}
+          </div>
+        </div>
+
+        ${p.sizes.some(s=>s.framePrice) ? `
+        <div class="pay-opt" id="frameToggle" style="margin-bottom:20px;">
+          <div class="pay-head"><span class="radio-dot"></span> Gerahmt liefern <span class="mono" id="frameSurcharge" style="margin-left:auto; color:var(--muted); font-weight:400;">+ ${fmtPrice(p.sizes[0].framePrice||0)}</span></div>
+          <div class="pay-detail" style="display:block;">Schlichter Holzrahmen in Schwarz oder Natur (Wunsch bei Bestellung angeben), passend zum gewählten Format. Versandfertig verpackt.</div>
+        </div>` : ((p.medium||'').includes('gerahmt') ? `<p class="meta" style="margin:-6px 0 18px;">Dieses Motiv wird bereits fertig gerahmt geliefert.</p>` : '')}
+
+        <div class="price-big" id="productPrice">${fmtPrice(p.sizes[0].price)}</div>
+        <button class="btn" id="addToCartBtn">In den Warenkorb</button>
+
+        <div class="coa-box">
+          <strong>Echtheitszertifikat inklusive.</strong> Jeder Druck wird mit laufender Nummer (z. B. 7/${p.edition}), Unterschrift und einem separaten Echtheitszertifikat ausgeliefert.
+        </div>
+      </div>
+    </div>
+  `;
+}
+function bindProduct(slug){
+  const p = findPrint(slug);
+  if(!p) return;
+  let selected = p.sizes[0].code;
+  let framed = false;
+  function updatePrice(){
+    const sz = p.sizes.find(s=>s.code===selected);
+    const total = sz.price + (framed && sz.framePrice ? sz.framePrice : 0);
+    document.getElementById('productPrice').textContent = fmtPrice(total);
+    const surchargeEl = document.getElementById('frameSurcharge');
+    if(surchargeEl) surchargeEl.textContent = '+ ' + fmtPrice(sz.framePrice||0);
+  }
+  document.querySelectorAll('#sizeOptions .size-opt').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      document.querySelectorAll('#sizeOptions .size-opt').forEach(o=>o.classList.remove('selected'));
+      el.classList.add('selected');
+      selected = el.dataset.size;
+      updatePrice();
+    });
+  });
+  const frameToggle = document.getElementById('frameToggle');
+  if(frameToggle) frameToggle.addEventListener('click', ()=>{
+    framed = !framed;
+    frameToggle.classList.toggle('selected', framed);
+    updatePrice();
+  });
+  const btn = document.getElementById('addToCartBtn');
+  if(btn) btn.addEventListener('click', ()=> addToCart(p.slug, selected, framed));
+}
+
+function viewCart(){
+  if(cart.length===0){
+    return `<div class="empty-state"><p>Dein Warenkorb ist leer.</p><a href="#galerie" class="btn" style="margin-top:12px;">Zur Galerie</a></div>`;
+  }
+  return `
+    <h1>Warenkorb</h1>
+    <div class="checkout-grid">
+      <div>
+        ${cart.map(line=>{
+          const p = findPrint(line.slug);
+          if(!p) return '';
+          const sz = p.sizes.find(s=>s.code===line.size);
+          return `
+            <div class="cart-line">
+              <div class="art-thumb">${artworkHTML(p, true)}</div>
+              <div class="grow">
+                <div style="font-weight:600;">${p.title}</div>
+                <div class="meta">${sz.code} · ${sz.dims}</div>
+                <div class="qty-ctl" style="margin-top:8px;">
+                  <button data-act="dec" data-slug="${p.slug}" data-size="${sz.code}">–</button>
+                  <span class="mono">${line.qty}</span>
+                  <button data-act="inc" data-slug="${p.slug}" data-size="${sz.code}">+</button>
+                  <a href="#" data-act="remove" data-slug="${p.slug}" data-size="${sz.code}" style="margin-left:14px; font-size:.8rem; color:var(--muted);">entfernen</a>
+                </div>
+              </div>
+              <div class="mono">${fmtPrice(lineTotal(line))}</div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+      <div>
+        <div class="summary-box">
+          <div class="summary-row"><span>Zwischensumme</span><span class="mono">${fmtPrice(cartTotal())}</span></div>
+          <div class="summary-row"><span>Versand</span><span class="mono">wird in der Kasse berechnet</span></div>
+          <div class="summary-row total"><span>Gesamt</span><span class="mono">${fmtPrice(cartTotal())}</span></div>
+          <a href="#kasse" class="btn" style="width:100%; justify-content:center; margin-top:16px;">Zur Kasse</a>
+        </div>
+      </div>
+    </div>
+  `;
+}
+function bindCart(){
+  document.querySelectorAll('[data-act]').forEach(el=>{
+    el.addEventListener('click', e=>{
+      e.preventDefault();
+      const {act, slug, size} = el.dataset;
+      const line = cart.find(l=>l.slug===slug && l.size===size);
+      if(!line) return;
+      if(act==='inc') setQty(slug,size,line.framed,line.qty+1);
+      else if(act==='dec') setQty(slug,size,line.framed,line.qty-1);
+      else if(act==='remove') removeLine(slug,size,line.framed);
+    });
+  });
+}
+
+function viewCheckout(){
+  if(cart.length===0){
+    return `<div class="empty-state"><p>Dein Warenkorb ist leer.</p><a href="#galerie" class="btn" style="margin-top:12px;">Zur Galerie</a></div>`;
+  }
+  const shipping = 6.90;
+  return `
+    <h1>Kasse</h1>
+    <div class="checkout-grid">
+      <div>
+        <h3>Lieferadresse</h3>
+        <div class="form-row2">
+          <div><label>Vorname</label><input required></div>
+          <div><label>Nachname</label><input required></div>
+        </div>
+        <label>Straße &amp; Hausnummer</label><input required>
+        <div class="form-row2">
+          <div><label>PLZ</label><input required></div>
+          <div><label>Ort</label><input required></div>
+        </div>
+        <label>E-Mail</label><input type="email" required>
+
+        <h3 style="margin-top:28px;">Zahlungsart</h3>
+        <div class="pay-options" id="payOptions">
+          <div class="pay-opt selected" data-pay="ueberweisung">
+            <div class="pay-head"><span class="radio-dot"></span> Überweisung (Vorkasse)</div>
+            <div class="pay-detail">Du erhältst nach der Bestellung unsere Bankverbindung per E-Mail. Der Druck wird nach Zahlungseingang versendet.</div>
+          </div>
+          <div class="pay-opt" data-pay="paypal">
+            <div class="pay-head"><span class="radio-dot"></span> PayPal</div>
+            <div class="pay-detail">Weiterleitung zu PayPal zum Abschluss der Zahlung (im Prototyp simuliert).</div>
+          </div>
+          <div class="pay-opt" data-pay="sofort">
+            <div class="pay-head"><span class="radio-dot"></span> Sofortüberweisung / Klarna</div>
+            <div class="pay-detail">Sofortige Zahlung per Online-Banking über Klarna (im Prototyp simuliert).</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="summary-box">
+          ${cart.map(line=>{
+            const p = findPrint(line.slug);
+            if(!p) return '';
+            return `<div class="summary-row"><span>${p.title} (${line.size}) × ${line.qty}</span><span class="mono">${fmtPrice(lineTotal(line))}</span></div>`;
+          }).join('')}
+          <div class="summary-row"><span>Versand</span><span class="mono">${fmtPrice(shipping)}</span></div>
+          <div class="summary-row total"><span>Gesamt</span><span class="mono">${fmtPrice(cartTotal()+shipping)}</span></div>
+          <button class="btn" id="placeOrderBtn" style="width:100%; justify-content:center; margin-top:16px;">Bestellung abschließen (Demo)</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+function bindCheckout(){
+  let selectedPay = 'ueberweisung';
+  document.querySelectorAll('#payOptions .pay-opt').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      document.querySelectorAll('#payOptions .pay-opt').forEach(o=>o.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedPay = el.dataset.pay;
+    });
+  });
+  const form = document.querySelectorAll('input');
+  const btn = document.getElementById('placeOrderBtn');
+  if(btn) btn.addEventListener('click', ()=>{
+    let valid = true;
+    form.forEach(inp=>{ if(inp.required && !inp.value){ valid=false; inp.style.borderColor='var(--accent)'; } });
+    if(!valid){ showToast('Bitte alle Felder ausfüllen'); return; }
+    window._lastOrder = {
+      no: 'CK-' + Math.floor(100000+Math.random()*900000),
+      pay: selectedPay,
+      total: cartTotal()+6.90
+    };
+    cart = [];
+    saveCart(cart);
+    location.hash = '#bestellung-bestaetigt';
+  });
+}
+
+function viewConfirm(){
+  const o = window._lastOrder || {no:'CK-000000', pay:'ueberweisung', total:0};
+  const payLabel = {ueberweisung:'Überweisung (Vorkasse)', paypal:'PayPal', sofort:'Sofortüberweisung / Klarna'}[o.pay];
+  return `
+    <div class="confirm-box">
+      <span class="eyebrow">Demo-Bestellung</span>
+      <h1>Danke – deine Bestellung ist (als Demo) eingegangen</h1>
+      <div class="order-no">${o.no}</div>
+      <p class="lede" style="margin:0 auto 10px;">Zahlungsart: ${payLabel} · Gesamt: ${fmtPrice(o.total)}</p>
+      <p class="lede" style="margin:0 auto;">Dies ist ein Prototyp – es wurde keine echte Zahlung ausgelöst und kein Druck versendet.</p>
+      <a href="#galerie" class="btn" style="margin-top:24px;">Zurück zur Galerie</a>
+    </div>
+  `;
+}
+
+function postRow(post){
+  return `
+    <a href="#beitrag-${post.slug}" class="post-row">
+      <div class="date mono">${new Date(post.date).toLocaleDateString('de-DE',{day:'2-digit',month:'short',year:'numeric'})}</div>
+      <div class="post-body">
+        <h3 style="margin:0 0 6px;">${post.title}</h3>
+        <p>${post.excerpt}</p>
+      </div>
+    </a>
+  `;
+}
+function viewBlogList(){
+  return `
+    <div class="section-head">
+      <span class="eyebrow">Blog</span>
+      <h1>Journal</h1>
+      <p class="lede">Notizen aus dem Atelier – über Technik, Editionen und laufende Arbeiten.</p>
+    </div>
+    <div class="post-list">${posts.length ? posts.map(postRow).join('') : '<div class="empty-state">Noch keine Beiträge.</div>'}</div>
+  `;
+}
+function viewPost(slug){
+  const post = posts.find(p=>p.slug===slug);
+  if(!post) return `<div class="empty-state">Beitrag nicht gefunden. <a href="#blog">Zum Blog</a></div>`;
+  const bodyHtml = (window.marked ? marked.parse(post.body||'') : `<p>${(post.body||'').replace(/\n\n/g,'</p><p>')}</p>`);
+  return `
+    <div class="breadcrumb"><a href="#blog">Blog</a> / ${post.title}</div>
+    <article style="max-width:680px;">
+      <span class="eyebrow mono">${new Date(post.date).toLocaleDateString('de-DE',{day:'2-digit',month:'long',year:'numeric'})}</span>
+      <h1>${post.title}</h1>
+      <div class="post-body">${bodyHtml}</div>
+    </article>
+  `;
+}
+
+function viewAbout(){
+  return `
+    <div class="product" style="align-items:start;">
+      <div>${artworkHTML(prints[2] || prints[0])}</div>
+      <div>
+        <span class="eyebrow">Über Claudia</span>
+        <h1>Kunst nach meinem Gefühl</h1>
+        <p class="lede">Claudia Hannemann arbeitet mit Tinte, Kaffee, Kohle und Kalk – reduzierte Materialien, die bewusst Flecken, Risse und Unperfektion zulassen. Im Zentrum stehen Gesichter, Figuren und kleine Alltagsmomente, oft in wenigen Linien festgehalten.</p>
+        <p class="lede">Jedes Original ist ein Unikat. Ausgewählte Motive erscheinen zusätzlich als limitierte, handsignierte und nummerierte Druckauflage. Mehr aus dem Atelier gibt es auf Instagram unter <a href="https://www.instagram.com/greysoul_art/" target="_blank" rel="noopener" style="color:var(--accent);">@greysoul_art</a>.</p>
+      </div>
+    </div>
+  `;
+}
+
+function viewContact(){
+  return `
+    <div class="section-head">
+      <span class="eyebrow">Kontakt</span>
+      <h1>Fragen zu einem Werk oder einer Bestellung?</h1>
+      <p class="lede">Dieses Formular ist Teil des Entwurfs und noch nicht angebunden. Später landet eine Anfrage direkt im Postfach.</p>
+    </div>
+    <form style="max-width:480px;" onsubmit="event.preventDefault(); this.reset(); showToastHelper();">
+      <label>Name</label><input required>
+      <label>E-Mail</label><input type="email" required>
+      <label>Nachricht</label>
+      <textarea required style="width:100%; min-height:120px; padding:10px 12px; border:1px solid var(--line); border-radius:4px; background:var(--surface); color:var(--ink); font-family:inherit;"></textarea>
+      <button class="btn" type="submit" style="margin-top:14px;">Absenden (Demo)</button>
+    </form>
+  `;
+}
+window.showToastHelper = function(){ showToast('Danke! (Demo – noch nicht angebunden)'); };
+
+function viewLegal(title, isImpressum){
+  return `
+    <div class="section-head">
+      <span class="eyebrow">Rechtliches</span>
+      <h1>${title}</h1>
+    </div>
+    <div style="max-width:620px; color:var(--ink-soft); font-size:.92rem;">
+      <p><strong>Platzhalter.</strong> ${isImpressum
+        ? 'Hier stehen im fertigen Shop die gesetzlich vorgeschriebenen Angaben zu Claudia Hannemann (Greysoul Art): vollständiger Name, ladungsfähige Anschrift, Kontaktmöglichkeit, ggf. Umsatzsteuer-ID. Diese Angaben müssen von Claudia geprüft und final eingetragen werden, bevor der Shop live geht.'
+        : 'Hier steht im fertigen Shop die vollständige Datenschutzerklärung (verantwortliche Stelle, Zweck der Datenverarbeitung, Hosting, Zahlungsdienstleister, Rechte der Nutzer). Diese muss vor dem Live-Start final erstellt werden.'}</p>
+    </div>
+  `;
+}
+function viewShipping(){
+  return `
+    <div class="section-head">
+      <span class="eyebrow">Versand &amp; Rückgabe</span>
+      <h1>Versand &amp; Rückgabe</h1>
+    </div>
+    <div style="max-width:620px; color:var(--ink-soft); font-size:.92rem;">
+      <p>Alle Drucke werden gerollt in einer stabilen Versandhülse verschickt, um Transportschäden zu vermeiden.</p>
+      <p>Als Privatperson/Künstlerin gilt für Widerruf und Rückgabe das gesetzliche Verbraucher-Widerrufsrecht. Die genauen Fristen und Bedingungen werden hier final ergänzt, sobald Rechtsform und Versanddienstleister feststehen.</p>
+    </div>
+  `;
+}
+
+// ---------- boot ----------
+window.addEventListener('hashchange', render);
+loadData();
+</script>
+</body>
+</html>
