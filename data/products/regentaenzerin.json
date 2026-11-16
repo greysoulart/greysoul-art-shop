@@ -1,0 +1,27 @@
+{
+  "slug": "regentaenzerin",
+  "title": "Regentänzerin",
+  "img": "images/greysoul-untitled.jpg",
+  "year": 2025,
+  "edition": 15,
+  "medium": "Kohle & Kaffee auf Papier",
+  "tags": [
+    "Originale",
+    "Kunstdrucke"
+  ],
+  "blurb": "Arbeitstitel – der endgültige Name wird mit Claudia abgestimmt. Eine Frau mit Schirm im Kaffee- und Kohleregen.",
+  "sizes": [
+    {
+      "code": "A4",
+      "dims": "21 × 30 cm",
+      "price": 85,
+      "framePrice": 32
+    },
+    {
+      "code": "A3",
+      "dims": "30 × 40 cm",
+      "price": 135,
+      "framePrice": 52
+    }
+  ]
+}

@@ -314,14 +314,10 @@ let allTags = ['Alle'];
 
 async function loadData(){
   try{
-    const [productsRes, postsRes] = await Promise.all([
-      fetch('data/products.json', {cache:'no-store'}),
-      fetch('data/posts.json', {cache:'no-store'})
-    ]);
-    const productsJson = await productsRes.json();
-    const postsJson = await postsRes.json();
-    prints = productsJson.items || [];
-    posts = (postsJson.items || []).slice().sort((a,b)=> new Date(b.date) - new Date(a.date));
+    const res = await fetch('/.netlify/functions/catalog', {cache:'no-store'});
+    const data = await res.json();
+    prints = data.products || [];
+    posts = data.posts || [];
     const tagSet = new Set();
     prints.forEach(p => (p.tags||[]).forEach(t => tagSet.add(t)));
     allTags = ['Alle', ...tagSet];

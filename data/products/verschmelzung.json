@@ -1,0 +1,27 @@
+{
+  "slug": "verschmelzung",
+  "title": "Verschmelzung",
+  "img": "images/verschmelzung.webp",
+  "year": 2026,
+  "edition": 6,
+  "medium": "Kohle & Tinte auf Papier",
+  "tags": [
+    "Originale",
+    "Kunstdrucke"
+  ],
+  "blurb": "Dieses Original hängt an meinem Arbeitsplatz und bleibt dort – nur als Kunstdruck in A4 und A3 verfügbar, je 6 Exemplare. Jeder Druck kommt mit einer handgemalten Dankeskarte mit meinen Gedanken zum Bild.",
+  "sizes": [
+    {
+      "code": "A4",
+      "dims": "21 × 30 cm",
+      "price": 95,
+      "framePrice": 32
+    },
+    {
+      "code": "A3",
+      "dims": "30 × 40 cm",
+      "price": 145,
+      "framePrice": 52
+    }
+  ]
+}

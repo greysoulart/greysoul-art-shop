@@ -14,64 +14,57 @@ locale: "de"
 collections:
   - name: "products"
     label: "Produkte"
-    files:
-      - name: "products"
-        label: "Alle Produkte"
-        file: "data/products.json"
+    label_singular: "Werk"
+    folder: "data/products"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    summary: "{{title}} — Auflage {{edition}}"
+    fields:
+      - { label: "Titel", name: "title", widget: "string" }
+      - label: "URL-Kürzel (slug)"
+        name: "slug"
+        widget: "string"
+        hint: "Nur Kleinbuchstaben, Zahlen und Bindestriche, z. B. mein-neues-werk. Muss einzigartig sein und darf nach dem Anlegen nicht mehr geändert werden."
+      - { label: "Bild", name: "img", widget: "image" }
+      - { label: "Entstehungsjahr", name: "year", widget: "number", value_type: "int" }
+      - { label: "Auflage (Stückzahl)", name: "edition", widget: "number", value_type: "int" }
+      - label: "Material / Technik"
+        name: "medium"
+        widget: "string"
+        hint: "z. B. Kohle & Tinte auf Papier. Wenn das Werk bereits gerahmt verkauft wird, das Wort „gerahmt“ im Text verwenden."
+      - label: "Kategorien"
+        name: "tags"
+        widget: "list"
+        hint: "z. B. Originale, Kunstdrucke, Seelenpost, Collagen, Freiheit, unperfekt %"
+        default: ["Kunstdrucke"]
+      - { label: "Beschreibungstext", name: "blurb", widget: "text" }
+      - label: "Formate & Preise"
+        name: "sizes"
+        widget: "list"
+        label_singular: "Format"
+        summary: "{{code}} — {{price}} €"
         fields:
-          - label: "Werke"
-            name: "items"
-            widget: "list"
-            label_singular: "Werk"
-            summary: "{{title}} — Auflage {{fields.edition}}"
-            fields:
-              - { label: "Titel", name: "title", widget: "string" }
-              - label: "URL-Kürzel (slug)"
-                name: "slug"
-                widget: "string"
-                hint: "Nur Kleinbuchstaben, Zahlen und Bindestriche, z. B. mein-neues-werk. Muss einzigartig sein."
-              - { label: "Bild", name: "img", widget: "image", media_library: { config: { multiple: false } } }
-              - { label: "Entstehungsjahr", name: "year", widget: "number", value_type: "int" }
-              - { label: "Auflage (Stückzahl)", name: "edition", widget: "number", value_type: "int" }
-              - label: "Material / Technik"
-                name: "medium"
-                widget: "string"
-                hint: "z. B. Kohle & Tinte auf Papier. Wenn das Werk bereits gerahmt verkauft wird, das Wort „gerahmt“ im Text verwenden."
-              - label: "Kategorien"
-                name: "tags"
-                widget: "list"
-                hint: "z. B. Originale, Kunstdrucke, Seelenpost, Collagen, Freiheit, unperfekt %"
-                default: ["Kunstdrucke"]
-              - { label: "Beschreibungstext", name: "blurb", widget: "text" }
-              - label: "Formate & Preise"
-                name: "sizes"
-                widget: "list"
-                label_singular: "Format"
-                summary: "{{code}} — {{price}} €"
-                fields:
-                  - { label: "Format-Code", name: "code", widget: "string", hint: "z. B. A4, A3, Set" }
-                  - { label: "Maße", name: "dims", widget: "string", hint: "z. B. 21 × 30 cm" }
-                  - { label: "Preis (€)", name: "price", widget: "number" }
-                  - { label: "Aufpreis gerahmt (€)", name: "framePrice", widget: "number", required: false, hint: "Leer lassen, wenn kein Rahmen angeboten wird." }
+          - { label: "Format-Code", name: "code", widget: "string", hint: "z. B. A4, A3, Set" }
+          - { label: "Maße", name: "dims", widget: "string", hint: "z. B. 21 × 30 cm" }
+          - { label: "Preis (€)", name: "price", widget: "number" }
+          - { label: "Aufpreis gerahmt (€)", name: "framePrice", widget: "number", required: false, hint: "Leer lassen, wenn kein Rahmen angeboten wird." }
 
   - name: "posts"
     label: "Blog"
-    files:
-      - name: "posts"
-        label: "Alle Beiträge"
-        file: "data/posts.json"
-        fields:
-          - label: "Beiträge"
-            name: "items"
-            widget: "list"
-            label_singular: "Beitrag"
-            summary: "{{title}} — {{fields.date}}"
-            fields:
-              - { label: "Titel", name: "title", widget: "string" }
-              - label: "URL-Kürzel (slug)"
-                name: "slug"
-                widget: "string"
-                hint: "Nur Kleinbuchstaben, Zahlen und Bindestriche. Muss einzigartig sein."
-              - { label: "Datum", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
-              - { label: "Kurztext (für die Übersicht)", name: "excerpt", widget: "string" }
-              - { label: "Text", name: "body", widget: "markdown" }
+    label_singular: "Beitrag"
+    folder: "data/posts"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    summary: "{{title}} — {{date}}"
+    sortable_fields: ["date", "title"]
+    fields:
+      - { label: "Titel", name: "title", widget: "string" }
+      - label: "URL-Kürzel (slug)"
+        name: "slug"
+        widget: "string"
+        hint: "Nur Kleinbuchstaben, Zahlen und Bindestriche. Muss einzigartig sein."
+      - { label: "Datum", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: "Kurztext (für die Übersicht)", name: "excerpt", widget: "string" }
+      - { label: "Text", name: "body", widget: "markdown" }

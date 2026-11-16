@@ -1,0 +1,27 @@
+{
+  "slug": "blindes-vertrauen",
+  "title": "Blindes Vertrauen",
+  "img": "images/blindes-vertrauen.webp",
+  "year": 2025,
+  "edition": 15,
+  "medium": "Kohle & Tinte auf Papier",
+  "tags": [
+    "Kunstdrucke",
+    "Freiheit"
+  ],
+  "blurb": "Dort, wo sie zerrissen war, strahlt sie heller als jede Narbe. Eine Tänzerin zwischen Mond und Sternen, entstanden aus blindem Vertrauen ins Universum.",
+  "sizes": [
+    {
+      "code": "A4",
+      "dims": "21 × 30 cm",
+      "price": 90,
+      "framePrice": 32
+    },
+    {
+      "code": "A3",
+      "dims": "30 × 40 cm",
+      "price": 140,
+      "framePrice": 52
+    }
+  ]
+}

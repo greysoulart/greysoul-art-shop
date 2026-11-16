@@ -1,0 +1,27 @@
+{
+  "slug": "der-erste-tropfen",
+  "title": "Der erste Tropfen",
+  "img": "images/der-erste-tropfen.webp",
+  "year": 2026,
+  "edition": 15,
+  "medium": "Kohle, Tinte & Kaffee auf Papier",
+  "tags": [
+    "Kunstdrucke",
+    "Originale"
+  ],
+  "blurb": "Der erste Regentropfen kündigt Erlösung an – intensiv, nur für einen Moment. Ein Gesicht im Regen, in Kohle und Kaffee festgehalten.",
+  "sizes": [
+    {
+      "code": "A4",
+      "dims": "21 × 30 cm",
+      "price": 90,
+      "framePrice": 32
+    },
+    {
+      "code": "A3",
+      "dims": "30 × 40 cm",
+      "price": 140,
+      "framePrice": 52
+    }
+  ]
+}

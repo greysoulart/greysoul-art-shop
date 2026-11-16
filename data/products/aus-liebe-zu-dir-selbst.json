@@ -1,0 +1,25 @@
+{
+  "slug": "aus-liebe-zu-dir-selbst",
+  "title": "Aus Liebe zu Dir selbst",
+  "img": "images/ballerina-collage.webp",
+  "year": 2025,
+  "edition": 10,
+  "medium": "Collage: Kohle, Tusche & Papier auf Karton, bereits gerahmt",
+  "tags": [
+    "Collagen",
+    "Kunstdrucke"
+  ],
+  "blurb": "Meine erste Collage: eine Ballerina aus einem alten Bild, neu zusammengesetzt. Aus Liebe zu dir selbst. Dieses Motiv wird ausschließlich fertig gerahmt geliefert.",
+  "sizes": [
+    {
+      "code": "A4",
+      "dims": "21 × 30 cm",
+      "price": 100
+    },
+    {
+      "code": "A3",
+      "dims": "30 × 40 cm",
+      "price": 160
+    }
+  ]
+}
