@@ -99,7 +99,7 @@ function renderOrders(orders){
           </div>
           <div>
             <h4>Bestellung</h4>
-            ${o.items.map(it => `<p>${it.title} (${it.size}${it.framed ? ', gerahmt' : ''}) × ${it.qty}</p>`).join('') || '<p>–</p>'}
+            ${o.items.map(it => `<p>${it.title} (${it.size}${it.framed ? ', gerahmt' : ''}) × ${it.qty}${it.lineTotal != null ? ` — ${Number(it.lineTotal).toLocaleString('de-DE',{minimumFractionDigits:2})} €` : ''}</p>`).join('') || '<p>–</p>'}
             <p class="amount" style="margin-top:8px;">${fmtMoney(o.amount)}</p>
             <p style="color:var(--muted); font-size:.8rem;">Zahlart: ${methodLabel[o.method] || o.method || '–'}</p>
           </div>

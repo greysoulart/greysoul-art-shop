@@ -714,7 +714,14 @@ function bindCheckout(){
     const orderRef = 'CK-' + Math.floor(100000+Math.random()*900000);
     const items = cart.map(line=>{
       const p = findPrint(line.slug);
-      return { title: p ? p.title : line.slug, size: line.size, qty: line.qty, framed: !!line.framed };
+      return {
+        title: p ? p.title : line.slug,
+        size: line.size,
+        qty: line.qty,
+        framed: !!line.framed,
+        unitPrice: unitPrice(line),
+        lineTotal: lineTotal(line)
+      };
     });
     const payload = {
       amount: (cartTotal()+shipping).toFixed(2),
