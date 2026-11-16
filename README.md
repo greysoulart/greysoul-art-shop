@@ -32,40 +32,33 @@ Für eine Seite dieser Größe reicht der kostenlose Netlify-Plan völlig aus
 greysoul-art.de) kostet separat bei einem Registrar ca. 10–15 €/Jahr – nicht
 bei Netlify selbst kaufen, das ist dort meist teurer.
 
-1. **GitHub-Repo anlegen** (falls noch nicht vorhanden): auf github.com einen
-   kostenlosen Account anlegen (am besten eines, das Claudia langfristig
-   selbst gehört), neues **privates** Repository erstellen, z. B.
-   `greysoul-art-shop`.
-2. Dieses Projekt dorthin pushen:
-   ```bash
-   cd greysoul-art-shop
-   git remote add origin <URL des neuen Repos>
-   git branch -M main
-   git commit -m "Initial commit"   # falls noch nicht committet
-   git push -u origin main
-   ```
-3. **Netlify-Account anlegen** (netlify.com, kostenlos) – am besten mit
-   "Sign up with GitHub", dann sind die Konten gleich verbunden.
-4. "Add new site" → "Import an existing project" → GitHub-Repo auswählen.
+1. ✓ **GitHub-Repo** `greysoulart/greysoul-art-shop` angelegt und Code
+   gepusht.
+2. **Netlify-Account** (netlify.com, kostenlos) – mit "Log in with GitHub"
+   und dabei das `greysoulart`-Konto wählen (wichtig, sonst verbindet
+   Netlify das falsche Repo).
+3. "Import an existing project" → GitHub → `greysoul-art-shop` auswählen.
    Build command leer lassen, Publish directory: `.` (Root). Deploy klicken.
-5. Im Netlify-Dashboard der Seite: **Site configuration → Identity → Enable
-   Identity**. Unter Registration preferences **"Invite only"** einstellen
-   (damit sich nicht jeder selbst anmelden kann).
-6. **Site configuration → Identity → Services → Git Gateway → Enable Git
-   Gateway.**
-7. **Identity → Invite users** → Claudias E-Mail-Adresse eintragen. Sie
-   bekommt eine E-Mail, setzt sich ein eigenes Passwort und kann sich danach
-   einloggen.
-8. Claudia öffnet `https://<ihre-seite>.netlify.app/admin/`, loggt sich ein
-   und kann über die Formulare Werke und Blogbeiträge hinzufügen, bearbeiten
-   oder löschen – inklusive Bild-Upload direkt im Formular.
+4. Admin-Login einrichten (Git Gateway/Identity-Login ist für neue Netlify-
+   Projekte nicht mehr verfügbar, daher direkter GitHub-Login):
+   - Bei GitHub (als `greysoulart`): [github.com/settings/developers](https://github.com/settings/developers)
+     → OAuth Apps → New OAuth App. Authorization callback URL muss exakt
+     `https://api.netlify.com/auth/done` sein. Client ID und Client Secret
+     notieren.
+   - Bei Netlify: **Project configuration → Security → OAuth** → unter
+     "Authentication Providers" → "Install provider" → GitHub → Client ID
+     und Secret eintragen, speichern.
+5. Claudia öffnet `https://<ihre-seite>.netlify.app/admin/`, klickt "Login
+   with GitHub" und kann über die Formulare Werke und Blogbeiträge
+   hinzufügen, bearbeiten oder löschen – inklusive Bild-Upload direkt im
+   Formular.
 
-Hinweis: Netlify Identity wird von Netlify nicht mehr aktiv weiterentwickelt.
-Für eine so kleine, nicht-öffentliche Nutzergruppe (nur Claudia) funktioniert
-es aber weiterhin zuverlässig. Sollte Netlify den Dienst für neue Sites doch
-einmal sperren, ist die Alternative ein GitHub-Login direkt für Claudia
-(dann braucht sie zusätzlich einen eigenen, kostenlosen GitHub-Account) –
-sag Bescheid, dann stelle ich `admin/config.yml` entsprechend um.
+Hinweis: Netlify Identity selbst läuft weiter, aber das dafür nötige
+"Git Gateway" wurde von Netlify eingestellt (Stand November 2026) und lässt
+sich bei neuen Projekten nicht mehr aktivieren. Der direkte GitHub-Login
+(oben) ist der aktuell von Netlify dokumentierte, funktionierende Weg und
+braucht kein zusätzliches Konto, da Claudia ihr GitHub-Konto ohnehin schon
+hat.
 
 ## Danach offene Punkte
 

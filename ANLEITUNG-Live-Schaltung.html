@@ -9,8 +9,9 @@
   h1{font-size:1.6rem; margin-bottom:4px;}
   .sub{color:#73695c; margin-top:0; margin-bottom:32px;}
   h2{font-size:1.15rem; margin-top:40px; border-bottom:2px solid #8a5a37; padding-bottom:6px;}
-  .step-num{display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; background:#8a5a37; color:#fff; border-radius:50%; font-size:.85rem; margin-right:8px; flex:none;}
+  .done{border-bottom-color:#3f6b4a;}
   .who{display:inline-block; font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; background:#ece3d4; color:#8a5a37; padding:3px 9px; border-radius:999px; margin-bottom:10px;}
+  .who.ok{background:#e3ede4; color:#3f6b4a;}
   code, .code{background:#efece4; padding:2px 6px; border-radius:4px; font-family:ui-monospace,Menlo,monospace; font-size:.9em;}
   .box{background:#fff; border:1px solid #e4ddcf; border-radius:8px; padding:16px 18px; margin:14px 0;}
   .note{background:#f3ece2; border-left:3px solid #8a5a37; padding:10px 14px; font-size:.92rem; margin:16px 0;}
@@ -20,45 +21,57 @@
 </head>
 <body>
 
-<h1>Greysoul Art live schalten</h1>
-<p class="sub">Kurze Anleitung, damit Claudia Produkte &amp; Blogbeiträge später selbst über ein einfaches Formular pflegen kann – ganz ohne Programmieren.</p>
+<h1>Greysoul Art online stellen</h1>
+<p class="sub">Damit Claudia Produkte &amp; Blogbeiträge später selbst über ein einfaches Formular pflegen kann – ganz ohne Programmieren.</p>
 
-<h2>1. GitHub-Konto (kostenlos)</h2>
+<h2 class="done">1. GitHub-Konto &amp; Repository</h2>
+<span class="who ok">✓ erledigt</span>
+<div class="box">
+  Konto <code>greysoulart</code> angelegt, Repository <code>greysoul-art-shop</code> erstellt.
+</div>
+
+<h2 class="done">2. Code hochladen</h2>
+<span class="who ok">✓ erledigt</span>
+<div class="box">
+  Der komplette Shop-Code liegt jetzt bei <a href="https://github.com/greysoulart/greysoul-art-shop">github.com/greysoulart/greysoul-art-shop</a>.
+</div>
+
+<h2>3. Netlify mit dem Repository verbinden</h2>
 <span class="who">für Claudia</span>
 <div class="box">
   <ol>
-    <li>Auf <a href="https://github.com/signup">github.com/signup</a> ein kostenloses Konto anlegen.</li>
-    <li>Ein neues <strong>privates</strong> Repository erstellen, z. B. mit dem Namen <span class="code">greysoul-art-shop</span>.</li>
-    <li>Unter <span class="code">Settings → Collaborators</span> die Person hinzufügen, die den Code hochlädt (GitHub-Benutzername von der Person, die diese Anleitung für dich vorbereitet hat).</li>
-  </ol>
-</div>
-
-<h2>2. Code hochladen</h2>
-<span class="who">technischer Schritt – macht die Person, die den Shop gebaut hat</span>
-<div class="box">
-  Sobald der Zugriff auf das Repository da ist, wird der fertige Shop-Ordner einmalig dorthin hochgeladen (per <span class="code">git push</span>). Das ist ein einmaliger technischer Schritt, danach nie wieder nötig.
-</div>
-
-<h2>3. Netlify-Konto (kostenlos)</h2>
-<span class="who">für Claudia</span>
-<div class="box">
-  <ol>
-    <li>Auf <a href="https://app.netlify.com/signup">netlify.com</a> registrieren – am einfachsten mit „Sign up with GitHub“, dann sind beide Konten direkt verbunden.</li>
-    <li><strong>„Add new site“ → „Import an existing project“</strong> auswählen und das GitHub-Repository verbinden.</li>
-    <li>Beim Einrichten: Build command leer lassen, Publish directory: <span class="code">.</span> (ein Punkt). Dann „Deploy“ klicken.</li>
-    <li>Nach ein paar Sekunden ist die Seite live, z. B. unter <span class="code">irgendein-name.netlify.app</span>.</li>
+    <li>Auf <a href="https://app.netlify.com/">app.netlify.com</a> einloggen – unbedingt mit <strong>„Log in with GitHub“</strong> und dabei das <code>greysoulart</code>-Konto wählen (wichtig: nicht irgendein anderes Konto, sonst verbindet sich Netlify mit dem falschen Repo).</li>
+    <li><strong>„Import an existing project“ → GitHub</strong> auswählen.</li>
+    <li>Falls gefragt wird, auf welchem Konto die Netlify-App installiert werden soll: <code>greysoulart</code> wählen, „All repositories“ oder „Only select repositories“ → <code>greysoul-art-shop</code> auswählen → <strong>Install</strong>.</li>
+    <li>Das Repository <code>greysoul-art-shop</code> aus der Liste auswählen.</li>
+    <li>Build command: <strong>leer lassen</strong>. Publish directory: <code>.</code> (ein einzelner Punkt).</li>
+    <li><strong>Deploy</strong> klicken. Nach ca. einer Minute ist die Seite live, z. B. unter <code>irgendein-name.netlify.app</code> – den Namen kannst du später in den Projekteinstellungen ändern.</li>
   </ol>
 </div>
 
 <h2>4. Login für den Admin-Bereich einrichten</h2>
 <span class="who">für Claudia, einmalig</span>
+<div class="note">
+  Hinweis: Der ursprünglich einfachere Weg („Identity“ mit E-Mail/Passwort) funktioniert bei neuen Netlify-Projekten nicht mehr (der dafür nötige Baustein „Git Gateway“ wurde eingestellt). Stattdessen loggt sich Claudia künftig mit ihrem GitHub-Konto (<code>greysoulart</code>) in den Admin-Bereich ein – braucht sie ja ohnehin schon.
+</div>
 <div class="box">
+  <strong>A) Bei GitHub eine „OAuth App“ anlegen</strong>
   <ol>
-    <li>Im Netlify-Dashboard der Seite: <span class="code">Site configuration → Identity → Enable Identity</span>.</li>
-    <li>Bei „Registration preferences“ <strong>„Invite only“</strong> auswählen (damit sich niemand Fremdes anmelden kann).</li>
-    <li><span class="code">Identity → Services → Git Gateway → Enable Git Gateway</span>.</li>
-    <li><span class="code">Identity → Invite users</span> → die eigene E-Mail-Adresse eintragen und einladen.</li>
-    <li>Die Einladungsmail öffnen, eigenes Passwort setzen – fertig.</li>
+    <li>Eingeloggt als <code>greysoulart</code> zu <a href="https://github.com/settings/developers">github.com/settings/developers</a> gehen.</li>
+    <li><strong>„OAuth Apps“ → „New OAuth App“</strong> (bzw. „Register a new application“).</li>
+    <li><strong>Application name:</strong> z. B. <code>Greysoul Art CMS</code></li>
+    <li><strong>Homepage URL:</strong> die Netlify-Adresse aus Schritt 3 (z. B. <code>https://irgendein-name.netlify.app</code>)</li>
+    <li><strong>Authorization callback URL:</strong> genau <code>https://api.netlify.com/auth/done</code> eintragen (exakt so, sehr wichtig!)</li>
+    <li><strong>„Register application“</strong> klicken.</li>
+    <li>Auf der neuen Seite die <strong>Client ID</strong> notieren.</li>
+    <li><strong>„Generate a new client secret“</strong> klicken, den angezeigten Wert sofort kopieren und sicher merken – er wird danach nicht mehr angezeigt.</li>
+  </ol>
+
+  <strong>B) Client ID &amp; Secret bei Netlify eintragen</strong>
+  <ol>
+    <li>Im Netlify-Projekt: <strong>Project configuration → Security → OAuth</strong>.</li>
+    <li>Unter „Authentication Providers“ → <strong>„Install provider“</strong>.</li>
+    <li><strong>GitHub</strong> auswählen, Client ID und Client Secret aus Schritt A einfügen, speichern.</li>
   </ol>
 </div>
 
@@ -66,8 +79,8 @@
 <span class="who">ab jetzt jederzeit selbstständig für Claudia</span>
 <div class="box">
   <ol>
-    <li><span class="code">https://irgendein-name.netlify.app/admin/</span> öffnen (Adresse aus Schritt 3, mit <span class="code">/admin/</span> am Ende).</li>
-    <li>Mit dem in Schritt 4 gesetzten Passwort einloggen.</li>
+    <li><span class="code">https://irgendein-name.netlify.app/admin/</span> öffnen (die Adresse aus Schritt 3, mit <span class="code">/admin/</span> am Ende).</li>
+    <li>„Login with GitHub“ klicken, mit <code>greysoulart</code> einloggen/bestätigen.</li>
     <li>Links „Produkte“ oder „Blog“ auswählen, „+ Neu“ klicken, Formular ausfüllen (Titel, Bild hochladen, Preis, Text …), „Publish“ klicken.</li>
     <li>Nach wenigen Sekunden ist die Änderung live auf der echten Seite sichtbar.</li>
   </ol>
