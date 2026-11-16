@@ -811,15 +811,44 @@ function viewContact(){
 window.showToastHelper = function(){ showToast('Danke! (Demo – noch nicht angebunden)'); };
 
 function viewLegal(title, isImpressum){
+  if(isImpressum){
+    return `
+      <div class="section-head">
+        <span class="eyebrow">Rechtliches</span>
+        <h1>Impressum</h1>
+      </div>
+      <div style="max-width:620px; color:var(--ink-soft); font-size:.92rem;">
+        <p style="color:var(--ink);"><strong>Angaben gemäß § 5 DDG</strong></p>
+        <p>
+          Claudia Hannemann<br>
+          Feldstraße 46<br>
+          17094 Burg Stargard
+        </p>
+
+        <p style="color:var(--ink);"><strong>Kontakt</strong></p>
+        <p>
+          Telefon: 0151 11687993<br>
+          E-Mail: <a href="mailto:claudiahannemann@gmx.de" style="color:var(--accent);">claudiahannemann@gmx.de</a>
+        </p>
+
+        <p style="color:var(--ink);"><strong>Umsatzsteuer</strong></p>
+        <p>Gemäß § 19 Abs. 1 UStG wird keine Umsatzsteuer berechnet und ausgewiesen (Kleinunternehmerregelung).</p>
+
+        <p style="color:var(--ink);"><strong>Redaktionell verantwortlich (§ 18 Abs. 2 MStV)</strong></p>
+        <p>Claudia Hannemann, Anschrift wie oben.</p>
+
+        <p style="color:var(--ink);"><strong>Verbraucherstreitbeilegung</strong></p>
+        <p>Wir sind nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+      </div>
+    `;
+  }
   return `
     <div class="section-head">
       <span class="eyebrow">Rechtliches</span>
       <h1>${title}</h1>
     </div>
     <div style="max-width:620px; color:var(--ink-soft); font-size:.92rem;">
-      <p><strong>Platzhalter.</strong> ${isImpressum
-        ? 'Hier stehen im fertigen Shop die gesetzlich vorgeschriebenen Angaben zu Claudia Hannemann (Greysoul Art): vollständiger Name, ladungsfähige Anschrift, Kontaktmöglichkeit, ggf. Umsatzsteuer-ID. Diese Angaben müssen von Claudia geprüft und final eingetragen werden, bevor der Shop live geht.'
-        : 'Hier steht im fertigen Shop die vollständige Datenschutzerklärung (verantwortliche Stelle, Zweck der Datenverarbeitung, Hosting, Zahlungsdienstleister, Rechte der Nutzer). Diese muss vor dem Live-Start final erstellt werden.'}</p>
+      <p><strong>Platzhalter.</strong> Hier steht im fertigen Shop die vollständige Datenschutzerklärung (verantwortliche Stelle, Zweck der Datenverarbeitung, Hosting, Zahlungsdienstleister, Rechte der Nutzer). Diese muss vor dem Live-Start final erstellt werden.</p>
     </div>
   `;
 }
